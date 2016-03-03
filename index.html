@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset='utf-8'>
+    <title>Ứng dụng chọn điện thoại</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.5/angular-material.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.5/angular-material.layouts.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.5/angular-material.min.js"></script>
+  </head>
+  <body ng-app="app" ng-controller='myCtrl' layout ng-cloak>
+      <md-sidenav md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
+        <div ng-include="'views/toolbar.html'"></div>
+        <md-content style='overflow-x:hidden;border-top:1px solid #ccc;' ng-include="'views/filters.html'"></md-content>
+      </md-sidenav>
+      <div layout='column' flex>
+        <md-toolbar class='md-whiteframe-z1' style='background:#f6f6f6;color:#202020'>
+          <div class="md-toolbar-tools">
+            <md-button class="md-raised md-icon-button material-icons" hide-gt-xs ng-click="openSidenav()" aria-label="Toggle Menu">filter_list</md-button>
+            <span layout="row" flex class='fill-height'>{{phones.valid.length}} <i class="material-icons">smartphone</i></span>
+          </div>
+        </md-toolbar>
+        <md-content md-scroll-y>
+          <div ng-include="'views/list.html'"></div>
+        </md-content>
+      </div>
+<script>var app=angular.module('app', ['ngMaterial']);</script>
+<script src="phones.js"></script>
+<script src="values.js"></script>
+<script src="services.js"></script>
+<script id="functions.js">
+function isNumber(n){return Number(n) == n;}
+function isInt(n){return isNumber(n) && n % 1 === 0;}
+function isFloat(n){return isNumber(n) && n % 1 !== 0;}
+</script>
+
+<script>
+    app.controller('myCtrl',function($scope,phones,$mdSidenav){
+      scope=$scope;
+      scope.openSidenav=function(){
+        $mdSidenav('left').toggle();
+      };
+      scope.debug=allPhones;
+      scope.phones=phones;
+      phones.update();
+    });
+</script>
+  </body>
+</html>
