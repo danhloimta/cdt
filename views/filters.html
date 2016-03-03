@@ -1,0 +1,27 @@
+<div>
+  Bạn có: <strong>dưới {{(phones.maxBudget)}} triệu đ</strong>
+  <md-slider aria-label='price' class='md-primary' ng-change='phones.update()' ng-model="phones.maxBudget" step="0.1" min="0.1" max=30>
+</div>
+<div>
+  <h3>Tìm nhanh</h3>
+  <div><md-button class='md-primary' ng-repeat='budget in [1,4,7,12,30]' ng-class='{"md-raised":phones.maxBudget==budget}' ng-click='phones.maxBudget=budget;phones.update();' href>&lt; {{budget}} triệu</md-button></div><div><md-button class='md-primary' ng-repeat='quickFilter in phones.quickFilters' ng-click='quickFilter.checked=!quickFilter.checked;phones.applyQuickFilter()' ng-class='{"md-raised":quickFilter.checked}'>{{quickFilter.name}}</md-button></div>
+</div>
+<div ng-repeat='spec in phones.specs'
+ng-if='spec.a!=true || (showAdvanceFilter && spec.a)'>
+  <div ng-if='spec.type=="checkbox"'>
+    <h3>{{spec.name}} <md-checkbox class='md-primary' aria-label='check all {{spec.id}}' ng-click='phones.specsCheckAll($index);phones.update();' ng-checked='phones.specsIsCheckAll($index)'></md-checkbox></h3>
+    <md-checkbox class='md-primary' ng-repeat='option in spec.options' ng-checked="option.checked" ng-click="option.checked=!option.checked;phones.update();">{{option.name}}</md-checkbox>
+  </div>
+  <div ng-if='spec.type=="number"'>
+    {{spec.name}}: <strong>trên {{spec.val+' '+spec.unit}}</strong>
+    <div><i class="material-icons" ng-hide='spec.val==spec.min' ng-click='spec.val=spec.min;phones.update();'>volume_mute</i>
+    <i class="material-icons" ng-hide='spec.val==spec.max' ng-click='spec.val=spec.max;phones.update();'>volume_up</i></div>
+
+    <md-slider aria-label='{{spec.id}}' class='md-primary' ng-change='phones.update()' ng-model='spec.val' step='{{spec.step}}' min='{{spec.min}}' max='{{spec.max}}'></md-slider>
+  </div>
+</div>
+<div layout-margin>
+  <md-button class='md-icon-button md-primary md-raised' ng-click='showAdvanceFilter=!showAdvanceFilter'>
+    <span class=' material-icons'>keyboard_arrow_{{showAdvanceFilter?'up':'down'}}</span>
+  </md-button>
+</div>
