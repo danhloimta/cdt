@@ -1,0 +1,54 @@
+<div layout='row' layout-xs='column'>
+  <md-input-container>
+  <md-select aria-label='order' ng-model="ascending" ng-init='ascending=false'>
+    <md-option ng-value="true">Ưu tiên rẻ</md-option>
+    <md-option ng-value="false">Ưu tiên đắt</md-option>
+  </md-select>
+</md-input-container>
+<md-input-container>
+  <input aria-label='filterBy' ng-model="filterBy" type="text">
+  <label>
+    <md-icon md-font-set="material-icons">search</md-icon>
+  </label>
+</md-input-container>
+
+</div>
+<div>
+  <md-card style='display:inline-block;width:200px;vertical-align:top;' ng-repeat='phone in phones.valid|filter:filterBy|orderBy:"price":!ascending'>
+    <img ng-src="{{phone.img}}" class="md-card-image">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{phone.name}}</span>
+        <span class="md-subhead"> Giá tham khảo: <strong>{{phone.price}} triệu</strong></span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button class='md-raised md-icon-button md-primary' ng-click='phone.clpsDetailsOpen=!phone.clpsDetailsOpen'><i class="material-icons">keyboard_arrow_{{phone.clpsDetailsOpen?'up':'down'}}</i></md-button>
+    </md-card-actions>
+    <md-card-content ng-if='phone.clpsDetailsOpen'>
+<md-button class='md-raised md-primary md-icon-button' ng-href="https://www.google.com/search?q={{phone.name}}&tbm=isch" target="_blank"><i class="material-icons">photo_library</i><md-tooltip>Xem các ảnh khác</md-tooltip></md-button>
+<md-button class='md-raised md-primary md-icon-button' ng-href="https://www.google.com/search?q=review đánh giá {{phone.name}}" target="_blank"><i class="material-icons">rate_review</i><md-tooltip>Xem đánh giá review</md-tooltip></md-button>
+<md-button class='md-raised md-primary md-icon-button' ng-href="https://www.google.com/search?q=ưu nhược điểm điện thoại {{phone.brand}}" target="_blank"><i class="material-icons">compare_arrows</i><md-tooltip>Ưu nhược điểm điện thoại {{phone.brand}}</md-tooltip></md-button>
+
+<md-menu>
+  <md-button aria-label="Mua" class="md-raised md-primary md-icon-button" ng-click="$mdOpenMenu($event)">
+    <i class="material-icons">shopping_cart</i><md-tooltip>Mua</md-tooltip></md-button>
+  <md-menu-content width="6">
+    <md-menu-item ng-repeat="shop in [
+  {'pre':'https://www.thegioididong.com/tim-kiem?key=',color:'fdd504',background:'000',name:'thegioididong'},
+  {'pre':'http://fptshop.com.vn/tim-kiem/',color:'000',background:'FF6D66',name:'FPT Shop'},
+  {'pre':'http://viettelstore.vn/tim-kiem.html?keyword=',color:'fff',background:'13938E',name:'Viettel Store'},
+    ]" style='background:#{{shop.background}};color:#{{shop.color}}'>
+      <md-button ng-href="{{shop.pre+phone.model}}" target='_blank'>
+        <i class="material-icons">shopping_cart</i> <strong ng-style="shop.name === 'thegioididong' && {'font-style': 'italic'}">{{shop.name}}</strong>
+      </md-button>
+    </md-menu-item>
+  </md-menu-content>
+</md-menu>
+
+
+<h3>Cấu hình</h3>
+      <div ng-repeat='spec in phone.specs'><strong>{{spec.field}}:</strong> {{spec.value+' '+spec.unit}}</div>
+    </md-card-content>
+  </md-card>
+</div>
